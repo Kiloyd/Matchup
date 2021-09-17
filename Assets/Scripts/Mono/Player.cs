@@ -53,5 +53,12 @@ public class Player : MonoBehaviour
             status.updateItemAmount_pick(collision.GetComponent<Item>().itemType);
             collision.gameObject.SetActive(false);
         }
+        else if (collision.tag == "finish")
+        {
+            Debug.Log("reach finish line!");
+            collision.gameObject.SetActive(false);
+            FindObjectOfType<GameManager>().gameOver();
+        }
+
     }
 }
