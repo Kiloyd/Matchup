@@ -8,8 +8,11 @@ public class Player : MonoBehaviour
 {
     #region Property
 
+    public static Player p;
     [SerializeField]
     private InventoryDataSetting inventorySetting;
+    [SerializeField]
+    private ItemSpriteMap itemSpriteMap;
     [SerializeField]
     private float playerSpeed;
     [SerializeField]
@@ -19,24 +22,22 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Collider2D detectArea;
 
-    [SerializeField]
-    private PlayerStatus status;
-    private PlayerController playerController;
+    public PlayerStatus status;
+    public PlayerController playerController;
 
     #endregion
 
     private void Start()
     {
-        detectArea = GetComponent<Collider2D>();
-
-        if (inventorySetting != null)
-            status = new PlayerStatus(inventorySetting, detectArea);
+        if (p == null)
+            p = this;
         else
-            status = new PlayerStatus(ScriptableObject.CreateInstance<InventoryDataSetting>(), gameObject.AddComponent<Collider2D>());
+        {
+            Destroy(this);
+            return;
+        }
 
-        playerController = new PlayerController(playerSpeed, fallingSpeed, JumpPower, GetComponent<Rigidbody2D>(), GetComponent<Collider2D>());
-
-        //Debug.Log(status.inventoryData.itemAmount[1]);
+        playerReset();
     }
 
     private void FixedUpdate()
@@ -51,6 +52,11 @@ public class Player : MonoBehaviour
         {
             Debug.Log(transform.name + " touch " + collision.name);
             status.updateItemAmount_pick(collision.GetComponent<Item>().itemType);
+
+            Backpack.b.syncItemAmount();
+            Backpack.b.syncBackpackUIDisplay();
+            Backpack.b.syncDescriptionBySprite(itemSpriteMap.itemSpriteMap[(int)collision.GetComponent<Item>().itemType]);
+            
             collision.gameObject.SetActive(false);
         }
         else if (collision.tag == "finish")
@@ -59,6 +65,17 @@ public class Player : MonoBehaviour
             collision.gameObject.SetActive(false);
             FindObjectOfType<GameManager>().gameOver();
         }
+    }
 
+    public void playerReset()
+    {
+        detectArea = GetComponent<Collider2D>();
+
+        if (inventorySetting != null)
+            status = new PlayerStatus(inventorySetting, detectArea);
+        else
+            status = new PlayerStatus(ScriptableObject.CreateInstance<InventoryDataSetting>(), gameObject.AddComponent<Collider2D>());
+
+        playerController = new PlayerController(playerSpeed, fallingSpeed, JumpPower, GetComponent<Rigidbody2D>(), GetComponent<Collider2D>());
     }
 }

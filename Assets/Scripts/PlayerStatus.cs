@@ -49,5 +49,13 @@ public class PlayerStatus
         itemAmount[(int)itemNum] += 1;
     }
 
+    public void updateItemAmount_consume(ItemEnum itemNum)
+    {
+        if (itemAmount[(int)itemNum] - 1 >= 0)
+            itemAmount[(int)itemNum] -= 1;
+        else
+            itemAmount[(int)itemNum] = 0;
+    }
+
     #endregion
 }

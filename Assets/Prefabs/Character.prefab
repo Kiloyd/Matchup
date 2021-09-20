@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventorySetting: {fileID: 11400000, guid: 8b6b6ccc602d82848aa7a0db8a167454, type: 2}
+  itemSpriteMap: {fileID: 11400000, guid: 912f3aad990dd0d47b9b1262b0e32703, type: 2}
   playerSpeed: 8
   fallingSpeed: 3
   JumpPower: 15
