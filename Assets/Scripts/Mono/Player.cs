@@ -76,6 +76,6 @@ public class Player : MonoBehaviour
         else
             status = new PlayerStatus(ScriptableObject.CreateInstance<InventoryDataSetting>(), gameObject.AddComponent<Collider2D>());
 
-        playerController = new PlayerController(playerSpeed, fallingSpeed, JumpPower, GetComponent<Rigidbody2D>(), GetComponent<Collider2D>());
+        playerController = new PlayerController(playerSpeed, fallingSpeed, JumpPower, GetComponent<Rigidbody2D>(), GetComponent<Collider2D>(), GetComponent<Animator>());
     }
 }
